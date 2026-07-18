@@ -817,5 +817,57 @@
     "documents_submitted": [
       "Government-issued Photo ID (Driver's License)"
     ]
+  },
+  {
+    "application_id": "LOAN-RAYMOND_REDDINGTON-20260719002722",
+    "applicant": {
+      "full_name": "Raymond Reddington",
+      "date_of_birth": "1960-02-07",
+      "ssn_last_four": "1001",
+      "email": "reddington@blacklist.gov",
+      "phone": "555-1001",
+      "address": {
+        "street": "8th and H Street NW",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20001"
+      }
+    },
+    "employment": {
+      "employer": "Global Consulting LLC",
+      "position": "Managing Director",
+      "years_employed": 12.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 700,
+      "monthly_debt_payments": 1500.0,
+      "monthly_housing_cost": 3000.0,
+      "checking_account_balance": 15000.0,
+      "savings_account_balance": 450000.0,
+      "existing_loans": [
+        {
+          "type": "Personal Loan",
+          "remaining_balance": 0.0,
+          "monthly_payment": 1500.0
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 45000.0,
+      "loan_purpose": "Other",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
   }
 ]

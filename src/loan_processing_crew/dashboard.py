@@ -1,6 +1,8 @@
 import json
 import os
 import sqlite3
+import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
@@ -9,6 +11,15 @@ import plotly.graph_objects as go
 import streamlit as st
 import pypdf
 from litellm import completion
+try:
+    from loan_processing_crew.phoenix_eval import (
+        run_loan_evaluations, get_eval_summary, clear_eval_results, PHOENIX_AVAILABLE
+    )
+except Exception:
+    PHOENIX_AVAILABLE = False
+    def get_eval_summary(): import pandas as pd; return pd.DataFrame()
+    def run_loan_evaluations(application_id=None): import pandas as pd; return pd.DataFrame()
+    def clear_eval_results(): pass
 
 # 1. Page Configuration
 st.set_page_config(
@@ -321,7 +332,12 @@ with head_right:
     st.button(theme_label, on_click=toggle_theme, use_container_width=True)
 
 # Main Navigation Tabs
-tab_overview, tab_traces, tab_intake = st.tabs(["📊 Executive Summary", "🔍 Trace Inspector & Compliance", "📝 New Application Form"])
+tab_overview, tab_traces, tab_intake, tab_eval = st.tabs([
+    "📊 Executive Summary",
+    "🔍 Trace Inspector & Compliance",
+    "📝 New Application Form",
+    "🧪 Evaluation",
+])
 
 spans_df, audit_df = load_data()
 
@@ -1206,4 +1222,183 @@ with tab_intake:
                     st.code(stderr or stdout)
             except Exception as ex:
                 st.error(f"Failed to start review process: {ex}")
+
+
+# =====================================================================
+# TAB 4: PHOENIX ARIZE EVALUATION
+# =====================================================================
+with tab_eval:
+    st.markdown("### 🧪 LLM-as-Judge Evaluation — Phoenix Arize")
+    st.caption(
+        "Run automated evaluations on every loan decision output using GPT-4o-mini as a judge. "
+        "Scores are stored in `output/phoenix_evals.db` and displayed below."
+    )
+
+    # Phoenix Status Banner
+    phoenix_col, link_col = st.columns([4, 1])
+    with phoenix_col:
+        if PHOENIX_AVAILABLE:
+            st.success("✅ Phoenix Arize is installed. Traces are forwarded to Phoenix when the crew runs.")
+        else:
+            st.error("❌ Phoenix not installed. Run: `uv add arize-phoenix openinference-instrumentation-crewai`")
+    with link_col:
+        st.link_button("🔍 Open Phoenix UI", "http://localhost:6006", use_container_width=True)
+
+    st.markdown("---")
+
+    # --- Run Evaluations Section ---
+    st.markdown("#### ▶️ Run Evaluations")
+    run_col1, run_col2, run_col3 = st.columns([3, 2, 2])
+    with run_col1:
+        output_dir_eval = Path("output")
+        decision_files_eval = sorted(output_dir_eval.glob("loan_decision_LOAN-*.md"))
+        app_ids_eval = [f.stem.replace("loan_decision_", "") for f in decision_files_eval]
+        eval_target = st.selectbox(
+            "Application to evaluate",
+            ["All Applications"] + app_ids_eval,
+            key="eval_target_select",
+        )
+    with run_col2:
+        st.markdown("&nbsp;", unsafe_allow_html=True)
+        run_eval_btn = st.button("🚀 Run Evaluation", key="run_eval_btn", use_container_width=True)
+    with run_col3:
+        st.markdown("&nbsp;", unsafe_allow_html=True)
+        clear_eval_btn = st.button("🗑️ Clear All Results", key="clear_eval_btn", use_container_width=True)
+
+    if run_eval_btn:
+        target_id = None if eval_target == "All Applications" else eval_target
+        with st.spinner(f"Running evaluations on {eval_target}... (calls GPT-4o-mini as judge)"):
+            new_results = run_loan_evaluations(application_id=target_id)
+        if not new_results.empty:
+            st.success(
+                f"✅ Evaluated {new_results['application_id'].nunique()} application(s) "
+                f"across {len(new_results)} rubric checks."
+            )
+        else:
+            st.warning("No decision files found. Process at least one application first.")
+        st.rerun()
+
+    if clear_eval_btn:
+        clear_eval_results()
+        st.success("Evaluation results cleared.")
+        st.rerun()
+
+    st.markdown("---")
+
+    # --- Results Display ---
+    eval_df = get_eval_summary()
+
+    if eval_df.empty:
+        st.info("No evaluation results yet. Select an application above and click **🚀 Run Evaluation**.")
+    else:
+        # Summary KPI row
+        total_checks = len(eval_df)
+        passed = (eval_df["label"] == "PASS").sum()
+        failed = (eval_df["label"] == "FAIL").sum()
+        avg_score = eval_df["score"].mean()
+        unique_apps = eval_df["application_id"].nunique()
+
+        kc1, kc2, kc3, kc4, kc5 = st.columns(5)
+        kc1.metric("Applications", unique_apps)
+        kc2.metric("Total Checks", total_checks)
+        kc3.metric("✅ Pass", int(passed))
+        kc4.metric("❌ Fail", int(failed))
+        kc5.metric("Avg Score", f"{avg_score:.2f}")
+
+        st.markdown("---")
+
+        # --- Score Heatmap ---
+        st.markdown("#### 📊 Score Heatmap — Application × Rubric")
+        pivot = eval_df.pivot_table(
+            index="application_id", columns="rubric_name", values="score", aggfunc="mean"
+        ).round(2)
+
+        fig_heat = px.imshow(
+            pivot,
+            color_continuous_scale="RdYlGn",
+            zmin=0, zmax=1,
+            text_auto=True,
+            aspect="auto",
+            labels={"x": "Evaluation Rubric", "y": "Application ID", "color": "Score"},
+        )
+        fig_heat.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color="#fafafa" if IS_DARK else "#09090b",
+            margin=dict(l=0, r=0, t=30, b=0),
+            height=max(300, 70 * len(pivot)),
+        )
+        st.plotly_chart(fig_heat, use_container_width=True)
+
+        # --- Pass Rate Bar Chart ---
+        st.markdown("#### 📈 Pass Rate by Rubric")
+        rubric_summary = (
+            eval_df.groupby("rubric_name")
+            .apply(lambda g: pd.Series({
+                "pass_rate": (g["label"] == "PASS").mean() * 100,
+                "avg_score": g["score"].mean(),
+                "count": len(g),
+            }))
+            .reset_index()
+        )
+
+        fig_bar = px.bar(
+            rubric_summary,
+            x="rubric_name",
+            y="pass_rate",
+            color="avg_score",
+            color_continuous_scale="RdYlGn",
+            range_color=[0, 1],
+            text=rubric_summary["pass_rate"].apply(lambda v: f"{v:.0f}%"),
+            labels={"rubric_name": "Rubric", "pass_rate": "Pass Rate (%)", "avg_score": "Avg Score"},
+        )
+        fig_bar.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color="#fafafa" if IS_DARK else "#09090b",
+            margin=dict(l=0, r=0, t=10, b=0),
+            height=320,
+            showlegend=False,
+            coloraxis_showscale=False,
+        )
+        fig_bar.update_traces(textposition="outside")
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+        # --- Detailed Results Table ---
+        st.markdown("#### 📋 Detailed Evaluation Results")
+        app_filter_eval = st.selectbox(
+            "Filter by Application",
+            ["All"] + sorted(eval_df["application_id"].unique().tolist()),
+            key="eval_detail_filter",
+        )
+        filtered_eval = (
+            eval_df if app_filter_eval == "All"
+            else eval_df[eval_df["application_id"] == app_filter_eval]
+        )
+
+        def _color_label(val):
+            if val == "PASS":
+                return "background-color: rgba(34,197,94,0.2); color: #22c55e; font-weight:bold"
+            elif val == "FAIL":
+                return "background-color: rgba(239,68,68,0.2); color: #ef4444; font-weight:bold"
+            return ""
+
+        display_eval = filtered_eval[
+            ["application_id", "rubric_name", "score", "label", "explanation", "evaluated_at"]
+        ].copy()
+        display_eval["score"] = display_eval["score"].round(3)
+
+        st.dataframe(
+            display_eval.style.map(_color_label, subset=["label"]),
+            use_container_width=True,
+            hide_index=True,
+        )
+
+        # --- Phoenix Deep Link ---
+        st.markdown("---")
+        st.info(
+            "🔍 **Explore traces in Phoenix:** Open [http://localhost:6006](http://localhost:6006) "
+            "to inspect agent spans, token usage, and latency waterfall for every processed application. "
+            "Phoenix captures traces automatically whenever `uv run loan_processing_crew` is run."
+        )
 
