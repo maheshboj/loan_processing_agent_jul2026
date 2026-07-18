@@ -4,12 +4,14 @@ import sys
 import json
 from pathlib import Path
 from loan_processing_crew.crew import LoanProcessingCrew
+from loan_processing_crew.telemetry import init_telemetry
 
 os.makedirs("output", exist_ok=True)
 
 
 def run():
     """Run the loan processing crew."""
+    init_telemetry()
     # Path to the applications file
     applications_file = Path("synthetic_data") / "loan_applications.json"
     
