@@ -1,4 +1,5 @@
 import json
+import os
 import sqlite3
 from datetime import datetime
 from pathlib import Path
@@ -6,6 +7,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import pypdf
+from litellm import completion
 
 # 1. Page Configuration
 st.set_page_config(
@@ -318,7 +321,7 @@ with head_right:
     st.button(theme_label, on_click=toggle_theme, use_container_width=True)
 
 # Main Navigation Tabs
-tab_overview, tab_traces = st.tabs(["📊 Executive Summary", "🔍 Trace Inspector & Compliance"])
+tab_overview, tab_traces, tab_intake = st.tabs(["📊 Executive Summary", "🔍 Trace Inspector & Compliance", "📝 New Application Form"])
 
 spans_df, audit_df = load_data()
 
@@ -737,3 +740,470 @@ else:
                 st.markdown(f'<div class="detail-block">{json.dumps(span_detail["parsed_attrs"], indent=2)}</div>', unsafe_allow_html=True)
 
             st.markdown("</div>", unsafe_allow_html=True)
+
+# ----------------- Tab 3: New Application Intake Form -----------------
+with tab_intake:
+    st.markdown("""
+    <div class="chart-wrap">
+        <div class="chart-title">Intake New Loan Application</div>
+        <div class="chart-subtitle">Upload applicant documents to pre-populate the profile, or enter the details manually.</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Document Uploader section
+    st.markdown("### 📂 Upload Supporting Documents")
+    st.caption("Upload text-based PDF, TXT, or JSON files (e.g., pay stubs, bank statements, tax forms, or personal info sheets) to auto-extract application fields.")
+    
+    uploaded_files = st.file_uploader(
+        "Upload Files",
+        accept_multiple_files=True,
+        type=["pdf", "txt", "json"],
+        key="document_uploader"
+    )
+    
+    if uploaded_files:
+        if st.button("🔍 Extract Data from Uploaded Documents", key="extract_doc_btn"):
+            with st.spinner("Extracting content and parsing structured loan data..."):
+                # Create raw_documents directory and a temporary directory
+                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                temp_app_id = f"LOAN-TEMP-{timestamp}"
+                raw_dir = Path("raw_documents") / temp_app_id
+                raw_dir.mkdir(parents=True, exist_ok=True)
+                
+                # Save uploaded files and compile text content
+                all_text_content = []
+                saved_files_info = []
+                
+                for file in uploaded_files:
+                    file_path = raw_dir / file.name
+                    file_bytes = file.read()
+                    with open(file_path, "wb") as f:
+                        f.write(file_bytes)
+                    saved_files_info.append(file.name)
+                    
+                    # Extract text based on file type
+                    ext = file.name.split(".")[-1].lower()
+                    if ext == "pdf":
+                        try:
+                            pdf_reader = pypdf.PdfReader(file_path)
+                            pdf_text = []
+                            for idx, page in enumerate(pdf_reader.pages):
+                                txt = page.extract_text()
+                                if txt:
+                                    pdf_text.append(txt)
+                            all_text_content.append(f"--- START PDF: {file.name} ---\n" + "\n".join(pdf_text) + f"\n--- END PDF: {file.name} ---")
+                        except Exception as e:
+                            all_text_content.append(f"[Error parsing PDF {file.name}: {e}]")
+                    elif ext == "txt" or ext == "json":
+                        try:
+                            txt = file_bytes.decode("utf-8", errors="ignore")
+                            all_text_content.append(f"--- START FILE: {file.name} ---\n{txt}\n--- END FILE: {file.name} ---")
+                        except Exception as e:
+                            all_text_content.append(f"[Error parsing text file {file.name}: {e}]")
+                            
+                # Combine all extracted text
+                combined_document_text = "\n\n".join(all_text_content)
+                
+                # Invoke LLM to extract fields
+                system_prompt = (
+                    "You are a structured document parsing engine for personal loan intake. "
+                    "Analyze the provided raw document text and extract all relevant information to populate the application form. "
+                    "You must output a JSON object containing the fields below. Do not add any conversational text or formatting wrappers like ```json. "
+                    "Format the JSON with the following schema:\n"
+                    "{\n"
+                    "  \"full_name\": \"Applicant's full name\",\n"
+                    "  \"date_of_birth\": \"YYYY-MM-DD format (if found)\",\n"
+                    "  \"ssn_last_four\": \"4 digit string\",\n"
+                    "  \"email\": \"email address\",\n"
+                    "  \"phone\": \"phone number\",\n"
+                    "  \"street\": \"residential street address\",\n"
+                    "  \"city\": \"city\",\n"
+                    "  \"state\": \"2 letter state code\",\n"
+                    "  \"zip\": \"ZIP code\",\n"
+                    "  \"employer\": \"employer name\",\n"
+                    "  \"position\": \"job title\",\n"
+                    "  \"years_employed\": float (years at current job),\n"
+                    "  \"annual_salary\": float (annual salary in USD),\n"
+                    "  \"employment_type\": \"Full-Time\" | \"Part-Time\" | \"Self-Employed\" | \"Contract\" | \"Unemployed\",\n"
+                    "  \"credit_score\": int (300-850, if not found use 700),\n"
+                    "  \"monthly_debt_payments\": float (monthly payment on other debts),\n"
+                    "  \"monthly_housing_cost\": float (rent or mortgage payment),\n"
+                    "  \"checking_account_balance\": float,\n"
+                    "  \"savings_account_balance\": float,\n"
+                    "  \"existing_loans\": [\n"
+                    "    { \"type\": \"Auto Loan\"|\"Student Loan\"|\"Personal Loan\"|\"Credit Card Debt\", \"remaining_balance\": float, \"monthly_payment\": float }\n"
+                    "  ],\n"
+                    "  \"bankruptcies\": int (number of bankruptcies),\n"
+                    "  \"late_payments_last_24_months\": int,\n"
+                    "  \"loan_amount\": float (requested loan amount),\n"
+                    "  \"loan_purpose\": \"Debt Consolidation\" | \"Home Improvement\" | \"Medical Bills\" | \"Major Purchase\" | \"Other\",\n"
+                    "  \"requested_term_months\": int (loan term in months, e.g. 36),\n"
+                    "  \"preferred_rate_type\": \"Fixed\" | \"Variable\"\n"
+                    "}"
+                )
+                
+                try:
+                    response = completion(
+                        model=os.environ.get("OPENAI_MODEL_NAME", "gpt-4o"),
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": f"Here is the text extracted from the uploaded files:\n\n{combined_document_text}"}
+                        ],
+                        response_format={"type": "json_object"}
+                    )
+                    
+                    raw_json = response.choices[0].message.content
+                    extracted_data = json.loads(raw_json)
+                    
+                    # Generate the final application ID based on Name + Timestamp
+                    full_name_extracted = extracted_data.get("full_name", "UNKNOWN").strip()
+                    cleaned_name = "".join(c for c in full_name_extracted.upper() if c.isalnum() or c == " ").strip()
+                    cleaned_name = cleaned_name.replace(" ", "_")
+                    if not cleaned_name:
+                        cleaned_name = "APPLICANT"
+                        
+                    final_app_id = f"LOAN-{cleaned_name}-{timestamp}"
+                    
+                    # Rename the directory to the final application ID
+                    final_dir = Path("raw_documents") / final_app_id
+                    if raw_dir.exists():
+                        raw_dir.rename(final_dir)
+                    
+                    # Save files info and final app ID to the state
+                    st.session_state.temp_raw_dir = str(final_dir)
+                    st.session_state.temp_app_id = final_app_id
+                    st.session_state.extracted_data = extracted_data
+                    
+                    st.success(f"Success! Data extracted for '{full_name_extracted}'. Application ID: {final_app_id}")
+                    st.rerun()
+                except Exception as err:
+                    st.error(f"Failed to parse documents using LLM: {err}")
+                    
+    st.markdown("---")
+    
+    # Load extracted data if available, and sanitize all numeric fields
+    ext_data = st.session_state.get("extracted_data", {})
+
+    # Sanitize: clamp numeric values to their widget bounds so Streamlit never crashes
+    def _clamp(val, lo, hi, default):
+        try:
+            v = float(val)
+            if v < lo or v > hi:
+                return default
+            return v
+        except (TypeError, ValueError):
+            return default
+
+    if ext_data:
+        ext_data["loan_amount"]              = _clamp(ext_data.get("loan_amount", 50000.0),      500.0,   50_000_000.0, 50000.0)
+        ext_data["annual_salary"]            = _clamp(ext_data.get("annual_salary", 250000.0),    0.0,   100_000_000.0, 250000.0)
+        ext_data["years_employed"]           = _clamp(ext_data.get("years_employed", 10.0),       0.0,           50.0, 10.0)
+        ext_data["credit_score"]             = int(_clamp(ext_data.get("credit_score", 750),     300,            850, 750))
+        ext_data["checking_account_balance"] = _clamp(ext_data.get("checking_account_balance", 50000.0), 0.0, 100_000_000.0, 50000.0)
+        ext_data["savings_account_balance"]  = _clamp(ext_data.get("savings_account_balance", 1000000.0), 0.0, 100_000_000.0, 1000000.0)
+        ext_data["monthly_housing_cost"]     = _clamp(ext_data.get("monthly_housing_cost", 2500.0), 0.0,      100_000.0, 2500.0)
+        ext_data["requested_term_months"]    = int(_clamp(ext_data.get("requested_term_months", 36), 6,              120, 36))
+
+
+    st.markdown("### ✍️ Review and Edit Application Form")
+    st.caption("Review the extracted data below. You can make adjustments to any field before submitting.")
+    
+    with st.form("loan_intake_form", clear_on_submit=False):
+        st.markdown("#### 1. Applicant Profile")
+        col1, col2 = st.columns(2)
+        with col1:
+            default_name = ext_data.get("full_name", "")
+            full_name = st.text_input("Full Name", value=default_name, placeholder="e.g. Bruce Wayne")
+            
+            # Date of Birth conversion
+            default_dob = datetime(1990, 1, 1).date()
+            dob_str = ext_data.get("date_of_birth", "")
+            if dob_str:
+                try:
+                    default_dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+                except Exception:
+                    pass
+            dob = st.date_input("Date of Birth", value=default_dob)
+            
+            default_ssn = ext_data.get("ssn_last_four", "")
+            ssn_last_four = st.text_input("SSN Last 4 Digits", value=default_ssn, max_chars=4, placeholder="e.g. 1234")
+        with col2:
+            default_email = ext_data.get("email", "")
+            email = st.text_input("Email Address", value=default_email, placeholder="e.g. bruce.wayne@email.com")
+            
+            default_phone = ext_data.get("phone", "")
+            phone = st.text_input("Phone Number", value=default_phone, placeholder="e.g. 555-0199")
+            
+        st.markdown("**Residential Address**")
+        col_street, col_city, col_state, col_zip = st.columns([2, 1, 1, 1])
+        with col_street:
+            default_street = ext_data.get("street", "")
+            street = st.text_input("Street Address", value=default_street, placeholder="e.g. 1007 Mountain Drive")
+        with col_city:
+            default_city = ext_data.get("city", "")
+            city = st.text_input("City", value=default_city, placeholder="e.g. Gotham")
+        with col_state:
+            default_state = ext_data.get("state", "")
+            state = st.text_input("State", value=default_state, max_chars=2, placeholder="e.g. NJ")
+        with col_zip:
+            default_zip = ext_data.get("zip", "")
+            zip_code = st.text_input("ZIP Code", value=default_zip, placeholder="e.g. 07001")
+            
+        st.markdown("---")
+        st.markdown("#### 2. Employment & Income")
+        col3, col4 = st.columns(2)
+        with col3:
+            default_employer = ext_data.get("employer", "")
+            employer = st.text_input("Employer / Organization", value=default_employer, placeholder="e.g. Wayne Enterprises")
+            
+            default_position = ext_data.get("position", "")
+            position = st.text_input("Job Title / Position", value=default_position, placeholder="e.g. Chairman & CEO")
+            
+            default_years = max(0.0, float(ext_data.get("years_employed", 10.0)))
+            years_employed = st.number_input("Years Employed", min_value=0.0, max_value=50.0, value=default_years, step=0.1)
+        with col4:
+            default_salary = max(0.0, float(ext_data.get("annual_salary", 250000.0)))
+            annual_salary = st.number_input("Annual Salary ($)", min_value=0.0, max_value=100000000.0, value=default_salary, step=5000.0)
+            
+            default_emp_type = ext_data.get("employment_type", "Full-Time")
+            if default_emp_type not in ["Full-Time", "Part-Time", "Self-Employed", "Contract", "Unemployed"]:
+                default_emp_type = "Full-Time"
+            employment_type = st.selectbox("Employment Type", ["Full-Time", "Part-Time", "Self-Employed", "Contract", "Unemployed"], index=["Full-Time", "Part-Time", "Self-Employed", "Contract", "Unemployed"].index(default_emp_type))
+            
+        st.markdown("---")
+        st.markdown("#### 3. Financial Profile & Debts")
+        col5, col6 = st.columns(2)
+        with col5:
+            default_credit = max(300, min(850, int(ext_data.get("credit_score", 750))))
+            credit_score = st.number_input("Credit Score", min_value=300, max_value=850, value=default_credit)
+            
+            default_checking = max(0.0, float(ext_data.get("checking_account_balance", 50000.0)))
+            checking_balance = st.number_input("Checking Account Balance ($)", min_value=0.0, max_value=100000000.0, value=default_checking, step=1000.0)
+            
+            default_savings = max(0.0, float(ext_data.get("savings_account_balance", 1000000.0)))
+            savings_balance = st.number_input("Savings Account Balance ($)", min_value=0.0, max_value=100000000.0, value=default_savings, step=5000.0)
+        with col6:
+            default_housing = max(0.0, float(ext_data.get("monthly_housing_cost", 2500.0)))
+            monthly_housing_cost = st.number_input("Monthly Housing Cost (Rent/Mortgage) ($)", min_value=0.0, max_value=100000.0, value=default_housing, step=100.0)
+            
+            default_bankruptcies = int(ext_data.get("bankruptcies", 0))
+            bankruptcies = st.number_input("Bankruptcies (Lifetime)", min_value=0, max_value=10, value=default_bankruptcies)
+            
+            default_late = int(ext_data.get("late_payments_last_24_months", 0))
+            late_payments = st.number_input("Late Payments (Last 24 Months)", min_value=0, max_value=50, value=default_late)
+            
+        st.markdown("**Existing Loans / Monthly Liabilities**")
+        
+        # Load existing loan from extracted data if available
+        ext_loans = ext_data.get("existing_loans", [])
+        default_loan_type = "None"
+        default_loan_bal = 0.0
+        default_loan_pay = 0.0
+        if ext_loans and isinstance(ext_loans, list) and len(ext_loans) > 0:
+            first_loan = ext_loans[0]
+            if isinstance(first_loan, dict):
+                default_loan_type = first_loan.get("type", "None")
+                default_loan_bal = float(first_loan.get("remaining_balance", 0.0))
+                default_loan_pay = float(first_loan.get("monthly_payment", 0.0))
+            
+        col_loan_type, col_loan_bal, col_loan_pay = st.columns([2, 2, 2])
+        with col_loan_type:
+            loan_types_list = ["None", "Auto Loan", "Student Loan", "Personal Loan", "Credit Card Debt"]
+            if default_loan_type not in loan_types_list:
+                default_loan_type = "None"
+            loan_type = st.selectbox("Existing Loan Type", loan_types_list, index=loan_types_list.index(default_loan_type))
+        with col_loan_bal:
+            loan_bal = st.number_input("Remaining Loan Balance ($)", min_value=0.0, max_value=10000000.0, value=default_loan_bal, step=500.0)
+        with col_loan_pay:
+            loan_pay = st.number_input("Monthly Loan Payment ($)", min_value=0.0, max_value=100000.0, value=default_loan_pay, step=50.0)
+
+        st.markdown("---")
+        st.markdown("#### 4. Loan Request")
+        col7, col8 = st.columns(2)
+        with col7:
+            default_req_amt = max(500.0, float(ext_data.get("loan_amount", 50000.0)))
+            loan_amount = st.number_input("Requested Loan Amount ($)", min_value=500.0, max_value=50000000.0, value=default_req_amt, step=5000.0)
+            
+            default_purpose = ext_data.get("loan_purpose", "Debt Consolidation")
+            purpose_list = ["Debt Consolidation", "Home Improvement", "Medical Bills", "Major Purchase", "Other"]
+            if default_purpose not in purpose_list:
+                default_purpose = "Other"
+            loan_purpose = st.selectbox("Loan Purpose", purpose_list, index=purpose_list.index(default_purpose))
+        with col8:
+            default_term = max(6, min(120, int(ext_data.get("requested_term_months", 36))))
+            requested_term = st.number_input("Requested Term (Months)", min_value=6, max_value=120, value=default_term, step=1)
+            
+            default_rate_type = ext_data.get("preferred_rate_type", "Fixed")
+            rate_types_list = ["Fixed", "Variable"]
+            if default_rate_type not in rate_types_list:
+                default_rate_type = "Fixed"
+            preferred_rate_type = st.selectbox("Rate Type Preference", rate_types_list, index=rate_types_list.index(default_rate_type))
+            
+        st.markdown("---")
+        st.markdown("#### 5. Document Intake Verification")
+        # Check standard documents submitted
+        docs_submitted_list = ext_data.get("documents_submitted", [])
+        
+        col_doc1, col_doc2 = st.columns(2)
+        with col_doc1:
+            doc_id = st.checkbox("Government-issued Photo ID (Driver's License)", value=any("ID" in str(d) or "License" in str(d) for d in docs_submitted_list) or True)
+            doc_pay = st.checkbox("Last 3 months pay stubs", value=any("pay stub" in str(d).lower() or "salary" in str(d).lower() for d in docs_submitted_list) or True)
+            doc_w2 = st.checkbox("W-2 forms (2024, 2025)", value=any("W-2" in str(d) or "tax" in str(d).lower() for d in docs_submitted_list) or True)
+        with col_doc2:
+            doc_bank = st.checkbox("Bank statements (last 3 months)", value=any("bank statement" in str(d).lower() for d in docs_submitted_list) or True)
+            doc_emp = st.checkbox("Employment verification letter", value=any("employment verification" in str(d).lower() or "employer letter" in str(d).lower() for d in docs_submitted_list) or True)
+            
+        submit_btn = st.form_submit_button("Create Loan Application Record")
+
+    if submit_btn:
+        if not full_name.strip():
+            st.error("Please enter the applicant's full name.")
+        else:
+            cleaned_name = "".join(c for c in full_name.upper() if c.isalnum() or c == " ").strip()
+            cleaned_name = cleaned_name.replace(" ", "_")
+            
+            # Retrieve or generate ID
+            final_app_id = st.session_state.get("temp_app_id")
+            if not final_app_id:
+                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                final_app_id = f"LOAN-{cleaned_name}-{timestamp}"
+            else:
+                # If they updated the name in the form, make sure it reflects the final ID!
+                old_dir_str = st.session_state.get("temp_raw_dir")
+                timestamp = final_app_id.split("-")[-1]
+                new_app_id = f"LOAN-{cleaned_name}-{timestamp}"
+                if old_dir_str and Path(old_dir_str).exists() and new_app_id != final_app_id:
+                    new_dir = Path("raw_documents") / new_app_id
+                    try:
+                        Path(old_dir_str).rename(new_dir)
+                        st.session_state.temp_raw_dir = str(new_dir)
+                        final_app_id = new_app_id
+                    except Exception:
+                        pass
+            
+            # Compile documents
+            docs_list = []
+            if doc_id: docs_list.append("Government-issued Photo ID (Driver's License)")
+            if doc_pay: docs_list.append("Last 3 months pay stubs")
+            if doc_w2: docs_list.append("W-2 forms (2024, 2025)")
+            if doc_bank: docs_list.append("Bank statements (last 3 months)")
+            if doc_emp: docs_list.append("Employment verification letter")
+            
+            # Compile existing loans
+            existing_loans = []
+            if loan_type != "None" and loan_pay > 0:
+                existing_loans.append({
+                    "type": loan_type,
+                    "remaining_balance": loan_bal,
+                    "monthly_payment": loan_pay
+                })
+            
+            # Create JSON payload
+            new_app = {
+                "application_id": final_app_id,
+                "applicant": {
+                    "full_name": full_name,
+                    "date_of_birth": dob.strftime("%Y-%m-%d"),
+                    "ssn_last_four": ssn_last_four or "0000",
+                    "email": email or "unknown@email.com",
+                    "phone": phone or "555-0000",
+                    "address": {
+                        "street": street or "N/A",
+                        "city": city or "N/A",
+                        "state": state or "N/A",
+                        "zip": zip_code or "N/A"
+                    }
+                },
+                "employment": {
+                    "employer": employer or "N/A",
+                    "position": position or "N/A",
+                    "years_employed": years_employed,
+                    "annual_salary": annual_salary,
+                    "employment_type": employment_type
+                },
+                "financial_profile": {
+                    "credit_score": credit_score,
+                    "monthly_debt_payments": loan_pay,
+                    "monthly_housing_cost": monthly_housing_cost,
+                    "checking_account_balance": checking_balance,
+                    "savings_account_balance": savings_balance,
+                    "existing_loans": existing_loans,
+                    "bankruptcies": bankruptcies,
+                    "late_payments_last_24_months": late_payments
+                },
+                "loan_request": {
+                    "loan_amount": loan_amount,
+                    "loan_purpose": loan_purpose,
+                    "requested_term_months": requested_term,
+                    "preferred_rate_type": preferred_rate_type
+                },
+                "documents_submitted": docs_list
+            }
+            
+            # Save to JSON file
+            json_path = Path("synthetic_data") / "loan_applications.json"
+            try:
+                apps = []
+                if json_path.exists():
+                    with open(json_path, "r", encoding="utf-8") as f:
+                        apps = json.load(f)
+                
+                if not isinstance(apps, list):
+                    apps = []
+                
+                apps.append(new_app)
+                
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump(apps, f, indent=2)
+                    
+                st.session_state.last_created_app_id = final_app_id
+                
+                # Clear extracted cache
+                st.session_state.pop("extracted_data", None)
+                st.session_state.pop("temp_app_id", None)
+                st.session_state.pop("temp_raw_dir", None)
+                
+                st.success(f"Successfully created loan application record! ID: {final_app_id}")
+                st.rerun()
+            except Exception as ex:
+                st.error(f"Error saving application: {ex}")
+
+    # Section for triggering background review of the newly created application
+    if "last_created_app_id" in st.session_state:
+        app_to_run = st.session_state.last_created_app_id
+        st.markdown(f"**Ready for Review:** `{app_to_run}`")
+        
+        if st.button("🚀 Trigger Agent Processing Flow", key="trigger_crew_btn"):
+            st.info(f"Triggering background processing for `{app_to_run}`...")
+            import subprocess
+            import sys
+            
+            env = os.environ.copy()
+            env["PYTHONIOENCODING"] = "utf-8"
+            env["CREWAI_TRACING_ENABLED"] = "true"
+            env["PYTHONPATH"] = "src"
+            
+            try:
+                process = subprocess.Popen(
+                    [sys.executable, "src/loan_processing_crew/main.py", app_to_run],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    env=env,
+                    cwd=os.getcwd(),
+                    text=True
+                )
+                
+                with st.spinner("Agents are analyzing application documents and compliance rules..."):
+                    stdout, stderr = process.communicate()
+                
+                if process.returncode == 0:
+                    st.success("Loan review complete! Telemetry traces saved to database.")
+                    st.markdown("You can now select the new ID in the **Trace Inspector & Compliance** tab to review compliance and agent timelines.")
+                    # Force data reload by clearing streamlit cache
+                    st.rerun()
+                else:
+                    st.error(f"Agent execution failed with exit code {process.returncode}")
+                    st.code(stderr or stdout)
+            except Exception as ex:
+                st.error(f"Failed to start review process: {ex}")
+

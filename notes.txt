@@ -14,3 +14,54 @@ Consolidated Report Loop:
 
 Pytest & CI/CD pipeline:
 “Can you build a pytest for these 9 test scenarios. This should used for CICD process using github actions.”
+
+===========================================================================
+PHASE 2 — Observability Dashboard (Conversation: 524c3992-9db8-4859-b3b7-1feb24ebe468)
+===========================================================================
+
+OpenTelemetry Observability Dashboard:
+"Build an observability dashboard for a loan processing agent that maps end-to-end traces to specific loan application IDs and verification statuses. The dashboard should use OpenTelemetry semantic conventions to capture LLM calls, tool executions (document verification, underwriting checks), and audit logs for compliance, with a summary view of token costs, tool latency, and agent error rates linked to individual loan processing workflows"
+
+Proceed with implementation:
+"proceed"
+
+Git push instructions:
+"I have to push this Opentelemetry branch to remote repo give me steps"
+
+===========================================================================
+PHASE 3 — Document Intake & Streamlit Frontend
+===========================================================================
+
+New Application Intake Workflow:
+"How can I use this project now to intake new application forms and other supporting documents. Process them and review the results later by a loan review officer?"
+
+Streamlit Frontend with LLM Extraction:
+"Lets use a streamlit front end to get the documents. Process them to create the record in the required format for adding it to the loan_applications.json file. you can have a logic to create the loan application id to have applicant name and current data time as loan application id"
+
+Proceed with implementation:
+"proceed"
+
+===========================================================================
+PHASE 4 — Bug Fixes & Enhancements
+===========================================================================
+
+Fix NameError for 'os':
+"NameError: name 'os' is not defined... File dashboard.py line 927 in <module> env = os.environ.copy()"
+
+Document Upload Instead of Manual Typing:
+"Instead of typing these application I want to upload documents and then use the data fromt those documents to update the fields on this New Application form tab. give option to upload multiple files. those files should be stored under the folder raw_documents with Loan application id as foldername. Once the data is loaded user can change anything they want and submit application for processing."
+
+Proceed (x3):
+"proceed"
+
+Upload from LOAN-2026-00142 folder:
+"Upload documents from LOAN-2026-00142 folder under raw_documents" (comment on implementation plan approval)
+
+Fix StreamlitValueBelowMinError:
+"streamlit.errors.StreamlitValueBelowMinError: The `value` 0.0 is less than the `min_value` 500.0... dashboard.py line 1004"
+
+Prompt history request:
+"give me the list of prompts which helped to build this code till now."
+
+Add prompts to notes.txt:
+"add this to a notes.txt file"
