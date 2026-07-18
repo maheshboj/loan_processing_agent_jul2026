@@ -1,0 +1,1 @@
+prompt:build me a personal loan processing crew. Build synthetic Data as required and build me a working end to end project which does all the steps like Document processing, Underwriting etc. use some dummy documents or create data to simulate the process

@@ -1,0 +1,451 @@
+[
+  {
+    "application_id": "LOAN-2026-00142",
+    "applicant": {
+      "full_name": "Sarah J. Mitchell",
+      "date_of_birth": "1988-03-15",
+      "ssn_last_four": "4829",
+      "email": "sarah.mitchell@email.com",
+      "phone": "555-0142",
+      "address": {
+        "street": "742 Evergreen Terrace",
+        "city": "Springfield",
+        "state": "IL",
+        "zip": "62704"
+      }
+    },
+    "employment": {
+      "employer": "TechNova Solutions Inc.",
+      "position": "Senior Software Engineer",
+      "years_employed": 4.5,
+      "annual_salary": 125000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 742,
+      "monthly_debt_payments": 1850,
+      "monthly_housing_cost": 1400,
+      "checking_account_balance": 18500,
+      "savings_account_balance": 45000,
+      "existing_loans": [
+        {
+          "type": "Auto Loan",
+          "remaining_balance": 12000,
+          "monthly_payment": 450
+        },
+        {
+          "type": "Student Loan",
+          "remaining_balance": 28000,
+          "monthly_payment": 350
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 1
+    },
+    "loan_request": {
+      "loan_amount": 35000,
+      "loan_purpose": "Home Improvement",
+      "requested_term_months": 60,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-HAPPY",
+    "applicant": {
+      "full_name": "Alice K. Vance",
+      "date_of_birth": "1994-08-20",
+      "ssn_last_four": "1290",
+      "email": "alice.vance@email.com",
+      "phone": "555-0210",
+      "address": {
+        "street": "123 Maple Street",
+        "city": "Boston",
+        "state": "MA",
+        "zip": "02108"
+      }
+    },
+    "employment": {
+      "employer": "Vertex Analytics LLC",
+      "position": "Director of Product Management",
+      "years_employed": 6.2,
+      "annual_salary": 160000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 780,
+      "monthly_debt_payments": 800,
+      "monthly_housing_cost": 1800,
+      "checking_account_balance": 24500,
+      "savings_account_balance": 85000,
+      "existing_loans": [
+        {
+          "type": "Auto Loan",
+          "remaining_balance": 8000,
+          "monthly_payment": 350
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 25000,
+      "loan_purpose": "Debt Consolidation",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-DTI-LIMIT",
+    "applicant": {
+      "full_name": "Marcus Brody",
+      "date_of_birth": "1981-11-12",
+      "ssn_last_four": "9812",
+      "email": "marcus.brody@email.com",
+      "phone": "555-0981",
+      "address": {
+        "street": "456 Oak Lane",
+        "city": "Denver",
+        "state": "CO",
+        "zip": "80202"
+      }
+    },
+    "employment": {
+      "employer": "Metropolitan Museum Corp",
+      "position": "Senior Curator",
+      "years_employed": 8.0,
+      "annual_salary": 85000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 685,
+      "monthly_debt_payments": 1200,
+      "monthly_housing_cost": 1200,
+      "checking_account_balance": 5200,
+      "savings_account_balance": 35000,
+      "existing_loans": [
+        {
+          "type": "Student Loan",
+          "remaining_balance": 35000,
+          "monthly_payment": 550
+        },
+        {
+          "type": "Credit Card",
+          "remaining_balance": 8500,
+          "monthly_payment": 250
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 2
+    },
+    "loan_request": {
+      "loan_amount": 35000,
+      "loan_purpose": "Medical Expenses",
+      "requested_term_months": 60,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-UNDERAGE",
+    "applicant": {
+      "full_name": "Tyler Durden",
+      "date_of_birth": "2009-02-14",
+      "ssn_last_four": "9901",
+      "email": "tyler.projectmayhem@email.com",
+      "phone": "555-0991",
+      "address": {
+        "street": "512 Paper Street",
+        "city": "Wilmington",
+        "state": "DE",
+        "zip": "19801"
+      }
+    },
+    "employment": {
+      "employer": "Soap Company Ltd",
+      "position": "Production Lead",
+      "years_employed": 0.8,
+      "annual_salary": 30000,
+      "employment_type": "Part-Time"
+    },
+    "financial_profile": {
+      "credit_score": 710,
+      "monthly_debt_payments": 100,
+      "monthly_housing_cost": 200,
+      "checking_account_balance": 1500,
+      "savings_account_balance": 0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 10000,
+      "loan_purpose": "Business Startup",
+      "requested_term_months": 24,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "Bank statements (last 3 months)"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-BAD-CREDIT",
+    "applicant": {
+      "full_name": "Franklin Clinton",
+      "date_of_birth": "1997-05-18",
+      "ssn_last_four": "2020",
+      "email": "franklin@email.com",
+      "phone": "555-2020",
+      "address": {
+        "street": "123 Forum Drive",
+        "city": "Los Santos",
+        "state": "CA",
+        "zip": "90001"
+      }
+    },
+    "employment": {
+      "employer": "Premium Deluxe Motorsport",
+      "position": "Repo Agent",
+      "years_employed": 1.2,
+      "annual_salary": 55000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 520,
+      "monthly_debt_payments": 900,
+      "monthly_housing_cost": 800,
+      "checking_account_balance": 800,
+      "savings_account_balance": 1200,
+      "existing_loans": [
+        {
+          "type": "Auto Loan",
+          "remaining_balance": 22000,
+          "monthly_payment": 500
+        }
+      ],
+      "bankruptcies": 2,
+      "late_payments_last_24_months": 8
+    },
+    "loan_request": {
+      "loan_amount": 15000,
+      "loan_purpose": "Auto Repair",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-INCONSISTENT",
+    "applicant": {
+      "full_name": "Raymond Reddington",
+      "date_of_birth": "1960-02-07",
+      "ssn_last_four": "1001",
+      "email": "reddington@blacklist.gov",
+      "phone": "555-1001",
+      "address": {
+        "street": "8th and H Street NW",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20001"
+      }
+    },
+    "employment": {
+      "employer": "Global Consulting LLC",
+      "position": "Managing Director",
+      "years_employed": 12.0,
+      "annual_salary": 250000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 810,
+      "monthly_debt_payments": 1500,
+      "monthly_housing_cost": 3000,
+      "checking_account_balance": 15000,
+      "savings_account_balance": 450000,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 45000,
+      "loan_purpose": "Other",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs (reflects $3,500 monthly gross income)",
+      "W-2 forms (shows Name: Raymond Redding, Salary: $42,000)",
+      "Bank statements (last 3 months)"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-FRAUD-RISK",
+    "applicant": {
+      "full_name": "Bernie Madoff",
+      "date_of_birth": "1938-04-29",
+      "ssn_last_four": "0000",
+      "email": "bernie@ponziwealth.com",
+      "phone": "999-000-0000",
+      "address": {
+        "street": "133 Peak Street Apt 12B",
+        "city": "Grand Cayman",
+        "state": "KY",
+        "zip": "00000"
+      }
+    },
+    "employment": {
+      "employer": "Bernard L. Madoff Investment Securities LLC",
+      "position": "Chairman",
+      "years_employed": 35.0,
+      "annual_salary": 999999,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 850,
+      "monthly_debt_payments": 0,
+      "monthly_housing_cost": 15000,
+      "checking_account_balance": 100000,
+      "savings_account_balance": 0,
+      "existing_loans": [],
+      "bankruptcies": 4,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 50000,
+      "loan_purpose": "Investment",
+      "requested_term_months": 12,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Bank statements (reflecting sudden $100,000 cash deposit and zero prior balance)"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-INCOMPLETE",
+    "applicant": {
+      "full_name": "Arthur Dent",
+      "date_of_birth": "1979-05-25",
+      "ssn_last_four": "4242",
+      "email": "arthur.dent@galaxy.com",
+      "phone": "555-4242",
+      "address": {
+        "street": "15 Country Lane",
+        "city": "Cottington",
+        "state": "West Country",
+        "zip": "GL54"
+      }
+    },
+    "employment": {
+      "employer": "Local Radio Station",
+      "position": "Associate Producer",
+      "years_employed": 3.4,
+      "annual_salary": 45000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 690,
+      "monthly_debt_payments": 350,
+      "monthly_housing_cost": 750,
+      "checking_account_balance": 1200,
+      "savings_account_balance": 3500,
+      "existing_loans": [
+        {
+          "type": "Student Loan",
+          "remaining_balance": 15000,
+          "monthly_payment": 200
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 12000,
+      "loan_purpose": "Home Improvement",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID"
+    ]
+  },
+  {
+    "application_id": "LOAN-2026-ESCALATION",
+    "applicant": {
+      "full_name": "Diana Prince",
+      "date_of_birth": "1918-03-22",
+      "ssn_last_four": "1941",
+      "email": "diana.prince@themyscira.org",
+      "phone": "555-1941",
+      "address": {
+        "street": "1000 Gateway Blvd",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20002"
+      }
+    },
+    "employment": {
+      "employer": "Smithsonian Institution",
+      "position": "Department Curator",
+      "years_employed": 15.0,
+      "annual_salary": 400000,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 820,
+      "monthly_debt_payments": 5000,
+      "monthly_housing_cost": 8000,
+      "checking_account_balance": 185000,
+      "savings_account_balance": 950000,
+      "existing_loans": [
+        {
+          "type": "Mortgage",
+          "remaining_balance": 850000,
+          "monthly_payment": 4500
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 250000,
+      "loan_purpose": "Business Expansion",
+      "requested_term_months": 84,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  }
+]

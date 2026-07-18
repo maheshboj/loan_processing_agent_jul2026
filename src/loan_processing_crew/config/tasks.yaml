@@ -1,0 +1,96 @@
+document_intake_task:
+  description: >
+    1. Load the loan application for {application_id} using the
+       Load Loan Application tool.
+    2. Verify all required documents are submitted (ID, pay stubs,
+       W-2s, bank statements, employment verification).
+    3. Extract and summarize key applicant data: name, income,
+       credit score, loan amount, purpose, and term.
+    4. Flag any missing documents or data inconsistencies.
+    5. Produce a structured intake summary.
+  expected_output: >
+    A comprehensive intake summary containing:
+    - Applicant profile (name, age, address, employment)
+    - Financial snapshot (income, credit score, existing debts)
+    - Loan request details (amount, purpose, term)
+    - Document checklist with status (complete/missing)
+    - Any flags or concerns identified
+  agent: document_processor
+
+underwriting_task:
+  description: >
+    Using the intake summary from the document processor:
+    1. Use the Credit Score Evaluator tool with the applicant's
+       credit score to determine risk tier and rate range.
+    2. Calculate monthly gross income from annual salary.
+    3. Estimate the new loan monthly payment (use simple amortization:
+       for a $35,000 loan at ~9% over 60 months, approximately $726/month).
+    4. Use the DTI Ratio Calculator with total monthly debts
+       (existing debts + new loan payment + housing cost).
+    5. Evaluate compensating factors (savings, employment stability,
+       credit history).
+    6. Provide a preliminary underwriting recommendation:
+       APPROVE, CONDITIONAL APPROVE, or DECLINE with reasoning.
+  expected_output: >
+    A detailed underwriting report containing:
+    - Credit tier assessment and suggested rate range
+    - DTI ratio calculation and assessment
+    - Risk factor analysis (positive and negative)
+    - Compensating factors evaluation
+    - Preliminary decision (APPROVE/CONDITIONAL/DECLINE)
+    - Recommended loan terms if approved (rate, term, amount)
+    - Conditions for approval if conditional
+  agent: underwriter
+  context:
+    - document_intake_task
+
+compliance_review_task:
+  description: >
+    Review the loan application and underwriting decision for
+    regulatory compliance:
+    1. Use the Regulatory Compliance Checker tool with the
+       applicant's age (calculate from DOB 1988-03-15),
+       loan amount, and annual income.
+    2. Verify fair lending practices were followed.
+    3. Identify all required disclosures (TILA, APR, etc.).
+    4. Check for any red flags or prohibited practices.
+    5. Provide compliance clearance or list required remediation.
+  expected_output: >
+    A compliance review report containing:
+    - Results of all regulatory checks
+    - Fair lending assessment
+    - Required disclosures list
+    - Compliance clearance status (CLEARED / REMEDIATION NEEDED)
+    - Any conditions or requirements before loan can close
+  agent: compliance_officer
+  context:
+    - document_intake_task
+    - underwriting_task
+
+final_decision_task:
+  description: >
+    Synthesize all previous reports and produce the final loan decision:
+    1. Review the document intake summary for completeness.
+    2. Review the underwriting report for risk assessment.
+    3. Review the compliance report for regulatory clearance.
+    4. Make a FINAL decision: APPROVED, CONDITIONALLY APPROVED,
+       or DECLINED.
+    5. If approved, specify exact terms: interest rate, monthly
+       payment, total cost of loan, and any conditions.
+    6. If declined, provide specific reasons and any alternative
+       options for the applicant.
+    7. Generate a professional loan decision letter.
+  expected_output: >
+    A final loan decision package containing:
+    - Decision: APPROVED / CONDITIONALLY APPROVED / DECLINED
+    - Loan terms (if approved): rate, monthly payment, term, total cost
+    - Conditions (if conditional)
+    - Decline reasons (if declined)
+    - Professional decision letter addressed to the applicant
+    - Next steps for the applicant
+  agent: loan_decision_manager
+  context:
+    - document_intake_task
+    - underwriting_task
+    - compliance_review_task
+  output_file: output/loan_decision.md

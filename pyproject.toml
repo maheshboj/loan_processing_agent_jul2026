@@ -1,0 +1,30 @@
+[project]
+name = "loan_processing_crew"
+version = "0.1.0"
+description = "loan_processing_crew using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[tools]==1.9.3",
+    "fpdf2>=2.8.7",
+]
+
+[project.scripts]
+loan_processing_crew = "loan_processing_crew.main:run"
+run_crew = "loan_processing_crew.main:run"
+train = "loan_processing_crew.main:train"
+replay = "loan_processing_crew.main:replay"
+test = "loan_processing_crew.main:test"
+run_with_trigger = "loan_processing_crew.main:run_with_trigger"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
