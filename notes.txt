@@ -1,1 +1,16 @@
 prompt:build me a personal loan processing crew. Build synthetic Data as required and build me a working end to end project which does all the steps like Document processing, Underwriting etc. use some dummy documents or create data to simulate the process
+
+Synthetic Data Generation:
+“Create a synthetic test dataset for a multi-agent loan-processing workflow built with CrewAI. The dataset will be used to test agent collaboration, routing, validation, document checks, underwriting logic, fraud/risk signals, exception handling, and final decision consistency. Goal: Generate realistic but fully dummy loan application test data that covers normal, boundary, negative, inconsistent, fraudulent, incomplete, and escalation scenarios.”
+
+Mock Raw Documents (Markdown):
+“can you create a folder and create documents that can help generate the scenarios present in the loan applications.json file. I want to show that the json was created from these documents.”
+
+Mock Raw Documents (PDF):
+“instead of md files can you create pdf files”
+
+Consolidated Report Loop:
+“make changes to include results from all the input applications in the final loan_decision.md file. as of now i could see only one application data.”
+
+Pytest & CI/CD pipeline:
+“Can you build a pytest for these 9 test scenarios. This should used for CICD process using github actions.”
