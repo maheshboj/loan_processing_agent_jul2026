@@ -447,5 +447,427 @@
       "Bank statements (last 3 months)",
       "Employment verification letter"
     ]
+  },
+  {
+    "application_id": "LOAN-BRUCE_WAYNE-20260718135333",
+    "applicant": {
+      "full_name": "Bruce Wayne",
+      "date_of_birth": "1990-01-01",
+      "ssn_last_four": "0000",
+      "email": "unknown@email.com",
+      "phone": "555-0000",
+      "address": {
+        "street": "N/A",
+        "city": "N/A",
+        "state": "N/A",
+        "zip": "N/A"
+      }
+    },
+    "employment": {
+      "employer": "N/A",
+      "position": "N/A",
+      "years_employed": 10.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 50000.0,
+      "loan_purpose": "Debt Consolidation",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-BRUCE_WAYNE-20260718135438",
+    "applicant": {
+      "full_name": "Bruce Wayne",
+      "date_of_birth": "1990-01-01",
+      "ssn_last_four": "0000",
+      "email": "bruce.wayne@email.com",
+      "phone": "555-0000",
+      "address": {
+        "street": "1007 Mountain Drive",
+        "city": "N/A",
+        "state": "N/A",
+        "zip": "N/A"
+      }
+    },
+    "employment": {
+      "employer": "N/A",
+      "position": "N/A",
+      "years_employed": 10.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 50000.0,
+      "loan_purpose": "Debt Consolidation",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-BRUCE_WAYNE-20260718135933",
+    "applicant": {
+      "full_name": "Bruce Wayne",
+      "date_of_birth": "1990-01-01",
+      "ssn_last_four": "0000",
+      "email": "bruce.wayne@email.com",
+      "phone": "555-0000",
+      "address": {
+        "street": "1007 Mountain Drive",
+        "city": "Gotham",
+        "state": "NJ",
+        "zip": "07001"
+      }
+    },
+    "employment": {
+      "employer": "N/A",
+      "position": "N/A",
+      "years_employed": 10.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 50000.0,
+      "loan_purpose": "Debt Consolidation",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-BRUCE_WAYNE-20260718140613",
+    "applicant": {
+      "full_name": "Bruce Wayne",
+      "date_of_birth": "1990-01-01",
+      "ssn_last_four": "1234",
+      "email": "bruce.wayne@email.com",
+      "phone": "555-0199",
+      "address": {
+        "street": "1007 Mountain Drive",
+        "city": "Gotham",
+        "state": "NJ",
+        "zip": "07001"
+      }
+    },
+    "employment": {
+      "employer": "Wayne Enterprises",
+      "position": "Chairman & CEO",
+      "years_employed": 10.0,
+      "annual_salary": 5000000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 50000.0,
+      "loan_purpose": "Debt Consolidation",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-MAHESH-20260718145002",
+    "applicant": {
+      "full_name": "Mahesh",
+      "date_of_birth": "1987-01-01",
+      "ssn_last_four": "1234",
+      "email": "mahe.b@gmail.com",
+      "phone": "9999999999",
+      "address": {
+        "street": "1007 Mountain Drive",
+        "city": "Gotham",
+        "state": "NJ",
+        "zip": "07001"
+      }
+    },
+    "employment": {
+      "employer": "CAT",
+      "position": "Data Scientist",
+      "years_employed": 10.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 75000.0,
+      "loan_purpose": "Home Improvement",
+      "requested_term_months": 30,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-BABU-20260718145337",
+    "applicant": {
+      "full_name": "BABU",
+      "date_of_birth": "1985-01-03",
+      "ssn_last_four": "1235",
+      "email": "mahe.b@gmail.com",
+      "phone": "9999999998",
+      "address": {
+        "street": "1007 Mountain Drive",
+        "city": "Gotham",
+        "state": "NJ",
+        "zip": "07001"
+      }
+    },
+    "employment": {
+      "employer": "CAT",
+      "position": "Data Scientist",
+      "years_employed": 10.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 75000.0,
+      "loan_purpose": "Home Improvement",
+      "requested_term_months": 30,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-FRANKLIN_CLINTON-20260718152029",
+    "applicant": {
+      "full_name": "Franklin Clinton",
+      "date_of_birth": "1997-05-18",
+      "ssn_last_four": "2020",
+      "email": "franklin@email.com",
+      "phone": "555-2020",
+      "address": {
+        "street": "123 Forum Drive",
+        "city": "Los Santos",
+        "state": "CA",
+        "zip": "90001"
+      }
+    },
+    "employment": {
+      "employer": "Premium Deluxe Motorsport",
+      "position": "Repo Agent",
+      "years_employed": 1.2,
+      "annual_salary": 55000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 700,
+      "monthly_debt_payments": 900.0,
+      "monthly_housing_cost": 800.0,
+      "checking_account_balance": 800.0,
+      "savings_account_balance": 1200.0,
+      "existing_loans": [
+        {
+          "type": "Auto Loan",
+          "remaining_balance": 0.0,
+          "monthly_payment": 900.0
+        }
+      ],
+      "bankruptcies": 2,
+      "late_payments_last_24_months": 8
+    },
+    "loan_request": {
+      "loan_amount": 15000.0,
+      "loan_purpose": "Other",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-ARTHUR_DENT-20260718231946",
+    "applicant": {
+      "full_name": "Arthur Dent",
+      "date_of_birth": "1979-05-25",
+      "ssn_last_four": "4242",
+      "email": "arthur.dent@galaxy.com",
+      "phone": "555-4242",
+      "address": {
+        "street": "15 Country Lane",
+        "city": "Cottington",
+        "state": "WC",
+        "zip": "GL54"
+      }
+    },
+    "employment": {
+      "employer": "Local Radio Station",
+      "position": "Associate Producer",
+      "years_employed": 3.4,
+      "annual_salary": 45000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 700,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 750.0,
+      "checking_account_balance": 1200.0,
+      "savings_account_balance": 3500.0,
+      "existing_loans": [],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 12000.0,
+      "loan_purpose": "Home Improvement",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)"
+    ]
+  },
+  {
+    "application_id": "LOAN-RAYMOND_REDDINGTON-20260719002722",
+    "applicant": {
+      "full_name": "Raymond Reddington",
+      "date_of_birth": "1960-02-07",
+      "ssn_last_four": "1001",
+      "email": "reddington@blacklist.gov",
+      "phone": "555-1001",
+      "address": {
+        "street": "8th and H Street NW",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20001"
+      }
+    },
+    "employment": {
+      "employer": "Global Consulting LLC",
+      "position": "Managing Director",
+      "years_employed": 12.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 700,
+      "monthly_debt_payments": 1500.0,
+      "monthly_housing_cost": 3000.0,
+      "checking_account_balance": 15000.0,
+      "savings_account_balance": 450000.0,
+      "existing_loans": [
+        {
+          "type": "Personal Loan",
+          "remaining_balance": 0.0,
+          "monthly_payment": 1500.0
+        }
+      ],
+      "bankruptcies": 0,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 45000.0,
+      "loan_purpose": "Other",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
   }
 ]

@@ -4,12 +4,17 @@ import sys
 import json
 from pathlib import Path
 from loan_processing_crew.crew import LoanProcessingCrew
+from loan_processing_crew.telemetry import init_telemetry
+from loan_processing_crew.phoenix_eval import init_phoenix_tracing
 
 os.makedirs("output", exist_ok=True)
 
 
 def run():
     """Run the loan processing crew."""
+    init_telemetry()
+    init_phoenix_tracing(launch_ui=True)   # Starts Phoenix UI + auto-instruments CrewAI
+
     # Path to the applications file
     applications_file = Path("synthetic_data") / "loan_applications.json"
     
