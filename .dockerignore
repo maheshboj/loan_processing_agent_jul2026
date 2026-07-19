@@ -1,0 +1,21 @@
+# Exclude Git files
+.git
+.github
+.gitignore
+
+# Exclude virtual environment and python caches
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Exclude local environment secrets
+.env
+
+# Exclude local run output files (traces, database, markdown outputs)
+output/
+
+# Exclude temporary folders
+temp_arize_skills/
