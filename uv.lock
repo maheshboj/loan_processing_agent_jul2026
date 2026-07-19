@@ -217,6 +217,22 @@ wheels = [
 ]
 
 [[package]]
+name = "arize-otel"
+version = "0.13.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-exporter-otlp" },
+    { name = "opentelemetry-proto" },
+    { name = "opentelemetry-sdk" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9e/70/e318acceb6d7807a376ac126bde32bd9457ddf7a525fdcd629d9672f1bcb/arize_otel-0.13.0.tar.gz", hash = "sha256:6ccd1e26be23a52a0dad2798c924036e2c73a0db086a2214c2817fcfa36a31e6", size = 16799, upload-time = "2026-05-27T20:14:56.61Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/21/8e/2e067e00f27aba8999dd610dada7c119d728a545b32d5381fe7898b32bb4/arize_otel-0.13.0-py3-none-any.whl", hash = "sha256:1748b42d432c6b8013200e62804baa20b0e471a074b1cfe573a9bd0026f6515b", size = 17745, upload-time = "2026-05-27T20:14:55.321Z" },
+]
+
+[[package]]
 name = "arize-phoenix"
 version = "14.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1738,11 +1754,13 @@ name = "loan-processing-crew"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "arize-otel" },
     { name = "arize-phoenix" },
     { name = "crewai", extra = ["tools"] },
     { name = "fpdf2" },
     { name = "litellm" },
     { name = "openinference-instrumentation-crewai" },
+    { name = "openinference-instrumentation-litellm" },
     { name = "opentelemetry-exporter-otlp-proto-http" },
     { name = "opentelemetry-sdk" },
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -1759,11 +1777,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "arize-otel", specifier = ">=0.13.0" },
     { name = "arize-phoenix", specifier = ">=8.0.0" },
     { name = "crewai", extras = ["tools"], specifier = "==1.9.3" },
     { name = "fpdf2", specifier = ">=2.8.7" },
     { name = "litellm", specifier = ">=1.75.3" },
     { name = "openinference-instrumentation-crewai", specifier = ">=0.1.0" },
+    { name = "openinference-instrumentation-litellm", specifier = ">=0.1.34" },
     { name = "opentelemetry-exporter-otlp-proto-http", specifier = ">=1.25.0" },
     { name = "opentelemetry-sdk", specifier = ">=1.25.0" },
     { name = "pandas", specifier = ">=2.2.0" },
@@ -2413,6 +2433,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a8/66/fbbecbe7cebbca6a9c8d5b2296560a4aa3ca2bc8538ad99b766209f5ae1d/openinference_instrumentation_crewai-1.1.10.tar.gz", hash = "sha256:a7c77a26fce35f9c99c798ac58e356801257dba865860c6764e226fa76c30249", size = 26464, upload-time = "2026-06-17T17:26:22.045Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4a/d3/6b435dc851f7c6b02b453a46f3179f2aa8c8b5e0301835c9c931eb8ba70c/openinference_instrumentation_crewai-1.1.10-py3-none-any.whl", hash = "sha256:fcf770ea92fbf97db913a25f347aadd26b3ce6125268eec0ee218003cdb3c9ce", size = 29331, upload-time = "2026-06-17T17:26:20.974Z" },
+]
+
+[[package]]
+name = "openinference-instrumentation-litellm"
+version = "0.1.34"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-sdk" },
+    { name = "setuptools" },
+    { name = "wrapt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ad/60/53c020d999db1e0a8cd389a308f8b4dea9e19e4dc2b03915f5daf33032c7/openinference_instrumentation_litellm-0.1.34.tar.gz", hash = "sha256:658e64d1ab72b5e98a72715f196c20a1e4a32ab6e85c83959b359c2532da4be7", size = 90562, upload-time = "2026-05-18T18:51:31.34Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f3/d0/efe9332070487d132d604bb7c6d0d57a5c2039760f200210efb57e7c940a/openinference_instrumentation_litellm-0.1.34-py3-none-any.whl", hash = "sha256:c73b5813467cc0faf010280e5196f677ac4f844f9c72ea7847b6dd29980261be", size = 17177, upload-time = "2026-05-18T18:51:29.987Z" },
 ]
 
 [[package]]
@@ -4166,6 +4204,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/72/d1/d3159231aec234a59dd7d601e9dd9fe96f3afff15efd33c1070019b26132/semver-3.0.4.tar.gz", hash = "sha256:afc7d8c584a5ed0a11033af086e8af226a9c0b206f313e0301f8dd7b6b589602", size = 269730, upload-time = "2025-01-24T13:19:27.617Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a6/24/4d91e05817e92e3a61c8a21e08fd0f390f5301f1c448b137c57c4bc6e543/semver-3.0.4-py3-none-any.whl", hash = "sha256:9c824d87ba7f7ab4a1890799cec8596f15c1241cb473404ea1cb0c55e4b04746", size = 17912, upload-time = "2025-01-24T13:19:24.949Z" },
+]
+
+[[package]]
+name = "setuptools"
+version = "83.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/34/26/f5d29e25ffdb535afef2d35cdb55b325298f96debd670da4c325e08d70f4/setuptools-83.0.0.tar.gz", hash = "sha256:025bccbbf0fa05b6192bc64ae1e7b16e001fd6d6d4d5de03c97b1c1ade523bef", size = 1154254, upload-time = "2026-07-04T15:31:22.699Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5d/40/e1e72872c6354b306daef1703549e8e83b4d43cfea356311bf722a043752/setuptools-83.0.0-py3-none-any.whl", hash = "sha256:29b23c360f22f414dc7336bb39178cc7bcbf6021ed2733cde173f09dba19abb3", size = 1008090, upload-time = "2026-07-04T15:31:20.885Z" },
 ]
 
 [[package]]
