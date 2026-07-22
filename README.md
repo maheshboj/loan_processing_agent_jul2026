@@ -206,6 +206,30 @@ uv run pytest tests/test_loan_processing.py::test_normal_approval -v
 
 ---
 
+### Option G — Run via Docker
+
+Build the image and run the application container injecting environment variables dynamically via `--env-file`:
+
+1. **Build the Docker Image:**
+
+   ```bash
+   docker build -t loan-processing-crew .
+   ```
+
+2. **Run Container with Environment File:**
+
+   ```bash
+   docker run -p 8501:8501 --env-file .env loan-processing-crew
+   ```
+
+   > **Note:** If port `8501` is already occupied on your host system, map to another port (e.g. `-p 8502:8501`):
+   > ```bash
+   > docker run -p 8502:8501 --env-file .env loan-processing-crew
+   > ```
+
+
+---
+
 ## 📝 New Application Intake Workflow
 
 The **📝 New Application Form** tab enables a complete document-to-decision pipeline:

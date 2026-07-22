@@ -869,5 +869,143 @@
       "Bank statements (last 3 months)",
       "Employment verification letter"
     ]
+  },
+  {
+    "application_id": "LOAN-RAYMOND_REDDINGTON-20260719184011",
+    "applicant": {
+      "full_name": "Raymond Reddington",
+      "date_of_birth": "1960-02-07",
+      "ssn_last_four": "1001",
+      "email": "reddington@blacklist.gov",
+      "phone": "555-1001",
+      "address": {
+        "street": "8th and H Street NW",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20001"
+      }
+    },
+    "employment": {
+      "employer": "Global Consulting LLC",
+      "position": "Managing Director",
+      "years_employed": 12.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 700,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 6600.0,
+      "checking_account_balance": 15000.0,
+      "savings_account_balance": 450000.0,
+      "existing_loans": [],
+      "bankruptcies": 1,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 45000.0,
+      "loan_purpose": "Other",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-JACKIE_CHAN-20260719184439",
+    "applicant": {
+      "full_name": "jackie chan",
+      "date_of_birth": "1988-04-09",
+      "ssn_last_four": "7799",
+      "email": "dummy1@gmail.com",
+      "phone": "555-999",
+      "address": {
+        "street": "china",
+        "city": "shanghai",
+        "state": "sh",
+        "zip": "0077"
+      }
+    },
+    "employment": {
+      "employer": "china movies",
+      "position": "hero",
+      "years_employed": 25.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 750,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 2500.0,
+      "checking_account_balance": 50000.0,
+      "savings_account_balance": 1000000.0,
+      "existing_loans": [],
+      "bankruptcies": 1,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 50000.0,
+      "loan_purpose": "Debt Consolidation",
+      "requested_term_months": 36,
+      "preferred_rate_type": "Fixed"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
+  },
+  {
+    "application_id": "LOAN-RAYMOND_REDDINGTON-20260719190744",
+    "applicant": {
+      "full_name": "Raymond Reddington",
+      "date_of_birth": "1960-02-07",
+      "ssn_last_four": "1001",
+      "email": "reddington@blacklist.gov",
+      "phone": "555-1001",
+      "address": {
+        "street": "8th and H Street NW",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20001"
+      }
+    },
+    "employment": {
+      "employer": "Global Consulting LLC",
+      "position": "Managing Director",
+      "years_employed": 12.0,
+      "annual_salary": 250000.0,
+      "employment_type": "Full-Time"
+    },
+    "financial_profile": {
+      "credit_score": 700,
+      "monthly_debt_payments": 0.0,
+      "monthly_housing_cost": 3000.0,
+      "checking_account_balance": 15000.0,
+      "savings_account_balance": 450000.0,
+      "existing_loans": [],
+      "bankruptcies": 1,
+      "late_payments_last_24_months": 0
+    },
+    "loan_request": {
+      "loan_amount": 45000.0,
+      "loan_purpose": "Other",
+      "requested_term_months": 48,
+      "preferred_rate_type": "Variable"
+    },
+    "documents_submitted": [
+      "Government-issued Photo ID (Driver's License)",
+      "Last 3 months pay stubs",
+      "W-2 forms (2024, 2025)",
+      "Bank statements (last 3 months)",
+      "Employment verification letter"
+    ]
   }
 ]
