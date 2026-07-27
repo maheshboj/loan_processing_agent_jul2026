@@ -1213,7 +1213,7 @@ with tab_intake:
                     stdout, stderr = process.communicate()
                 
                 if process.returncode == 0:
-                    st.success("Loan review complete! Telemetry traces saved to database.")
+                    st.success("Loan review complete!")
                     st.markdown("You can now select the new ID in the **Trace Inspector & Compliance** tab to review compliance and agent timelines.")
                     # Force data reload by clearing streamlit cache
                     st.rerun()

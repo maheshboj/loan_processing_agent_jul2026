@@ -43,7 +43,6 @@ loan_processing_crew/
 │   ├── crew.py                  # Crew assembly and wiring
 │   ├── main.py                  # Entry point — processes all/one application
 │   ├── dashboard.py             # Streamlit observability dashboard (4 tabs)
-│   ├── telemetry.py             # OpenTelemetry span exporter → SQLite
 │   └── phoenix_eval.py          # Phoenix Arize tracing + LLM-as-judge evals
 ├── synthetic_data/
 │   └── loan_applications.json   # 9 test scenarios + any new intake records
@@ -309,7 +308,6 @@ The 9 synthetic test scenarios in `loan_applications.json` cover:
 | `src/.../crew.py` | Wire agents + tasks + tools into the CrewAI crew |
 | `src/.../main.py` | Entry point: loads applications, runs crew, writes reports |
 | `src/.../dashboard.py` | Streamlit 4-tab observability + intake dashboard |
-| `src/.../telemetry.py` | OTel event hooks + custom SQLite span exporter |
 | `src/.../phoenix_eval.py` | Phoenix tracing init + LLM-as-judge evaluation engine |
 | `synthetic_data/loan_applications.json` | Application records (source of truth) |
 | `.env` | Environment variables (API keys) |
